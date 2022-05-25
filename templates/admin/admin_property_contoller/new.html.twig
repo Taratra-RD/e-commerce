@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Creer un bien</h2>
+    {{ include ('admin/admin_property_contoller/_form.html.twig', {form: form, button: 'Sauvegarder'}) }}
+{% endblock %}

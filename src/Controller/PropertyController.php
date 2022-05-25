@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Property;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 class PropertyController extends AbstractController
 {   
