@@ -7,7 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Property;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface as Paginator;
+use Symfony\Component\HttpFoundation\Request;
 
 class PropertyController extends AbstractController
 {   
@@ -35,10 +39,21 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/property', name: 'app_property_index')]
-    public function index(PersistenceManagerRegistry $doctrine): Response
+    public function index(Paginator $paginator, Request $request): Response
     {
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        $form->handleRequest($request);
+
+        $properties = $paginator->paginate(
+            $this->repository->findAllVisibleQuery($search),
+            $request->query->getInt('page', 1), 
+            12
+        );
         return $this->render('property/index.html.twig', [
             'current_menu' => 'properties',
+            'properties' => $properties,
+            'form' => $form->createView()
         ]);
     }
 

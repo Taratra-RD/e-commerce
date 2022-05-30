@@ -34,6 +34,7 @@ class AdminPropertyContollerController extends AbstractController
     #[Route('/admin/admin/property', name: 'app_admin_property_index')]
     public function index(): Response
     {
+        
         $properties = $this->repository->findAll();
         return $this->render('admin/admin_property_contoller/index.html.twig', [
             'properties' => $properties

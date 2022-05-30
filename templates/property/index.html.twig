@@ -3,7 +3,26 @@
 {% block title %}Nos biens{% endblock %}
 
 {% block body %}
+    <div class="jumbotron">
+        {{form_start(form)}}
+            <div class="row mt-4 align-self-center">
+                <div class="col-md-4">{{form_row(form.maxPrice)}}</div>
+                <div class="col-md-4">{{form_row(form.minSurface)}}</div>
+                <div class="col-md-2"><button class="btn btn-primary" type="submit">Rechercher</button></div>
+        {{form_end(form)}}
+    </div>
     <div class="container mt-4">
         <h1>Voir tous nos biens</h1>
+
+        <div class="row">
+            {% for property in properties %}
+                <div class="col-md-4">
+                    {% include 'property/_property.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(properties) }}
+        </div>
     </div>
 {% endblock %}
