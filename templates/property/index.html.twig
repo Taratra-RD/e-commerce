@@ -6,9 +6,10 @@
     <div class="jumbotron">
         {{form_start(form)}}
             <div class="row mt-4 align-self-center">
-                <div class="col-md-4">{{form_row(form.maxPrice)}}</div>
-                <div class="col-md-4">{{form_row(form.minSurface)}}</div>
-                <div class="col-md-2"><button class="btn btn-primary" type="submit">Rechercher</button></div>
+                <div class="col">{{form_row(form.maxPrice)}}</div>
+                <div class="col">{{form_row(form.minSurface)}}</div>
+                <div class="col">{{form_row(form.options)}}</div>
+                <div class="col"><button class="btn btn-primary" type="submit">Rechercher</button></div>
         {{form_end(form)}}
     </div>
     <div class="container mt-4">

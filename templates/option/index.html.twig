@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerer les options{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Gerer les biens</h2>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{message}}
+            </div>
+        {% endfor %}
+        <table class="table table-striped">
+            <thead>
+                <tr>  
+                    <th>Titre</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for option in options %}
+                    <tr>
+                        <td>{{option.name}}</td>
+                        <td>
+                            <a href="{{path('app_option_edit', {id: option.id})}}" class="btn btn-secondary">Editer</a>
+                            <form method="post" action="{{path('app_option_delete', {id: option.id})}}" style="display: inline-block;" onsubmit="return confirm('Etes vous vraiment sur?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{csrf_token('delete' ~ option.id)}}">
+                                <input type="submit" class="btn btn-danger" value="Supprimer">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-right">
+            <a href="{{path('app_admin_property_create')}}" class="btn btn-primary">Editer un nouveau bien</a>
+        </div>
+    </div>
+{% endblock %}
+ 
