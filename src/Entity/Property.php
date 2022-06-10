@@ -8,8 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Cocur\Slugify\Slugify;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
+#[Vich\Uploadable]
 class Property
 {
     const HEAT = [
@@ -21,6 +25,12 @@ class Property
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
+
+    #[ORM\Column(type: 'string')]
+    private ?string $fileName;
+
+    #[Vich\UploadableField(mapping: 'property_image', fileNameProperty: 'fileName')]
+    private ?File $imageFile;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
@@ -63,6 +73,9 @@ class Property
 
     #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'properties')]
     private $options;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $update_at;
 
     public function __construct()
     {
@@ -270,6 +283,59 @@ class Property
         if ($this->options->removeElement($option)) {
             $option->removeProperty($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of fileName
+     */ 
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * Set the value of fileName
+     *
+     * @return  self
+     */ 
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of imageFile
+     */ 
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set the value of imageFile
+     *
+     * @return  self
+     */ 
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+        if ($imageFile instanceof UploadedFile) {
+            $this->update_at = new \DateTime('now');
+        }
+    }
+
+    public function getUpdateAt(): ?\DateTime
+    {
+        return $this->update_at;
+    }
+
+    public function setUpdateAt(?\DateTime $update_at): self
+    {
+        $this->update_at = $update_at;
 
         return $this;
     }
