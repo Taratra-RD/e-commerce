@@ -26,11 +26,11 @@ class Property
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Vich\UploadableField(mapping: 'property_image', fileNameProperty: 'fileName')]
+    private ?File $imageFile = null;
+
     #[ORM\Column(type: 'string')]
     private ?string $fileName;
-
-    #[Vich\UploadableField(mapping: 'property_image', fileNameProperty: 'fileName')]
-    private ?File $imageFile;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
@@ -323,7 +323,7 @@ class Property
     public function setImageFile(?File $imageFile): void
     {
         $this->imageFile = $imageFile;
-        if ($imageFile instanceof UploadedFile) {
+        if ($imageFile) {
             $this->update_at = new \DateTime('now');
         }
     }

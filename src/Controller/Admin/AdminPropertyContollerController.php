@@ -61,7 +61,7 @@ class AdminPropertyContollerController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/admin/property/{id}', name: 'app_admin_property_edit')]
+    #[Route('/admin/admin/property/{id}', name: 'app_admin_property_edit', methods:['GET'])]
     public function edit(Property $property, Request $request): Response
     {
         $form = $this->createForm(PropertyType::class, $property);
@@ -78,7 +78,7 @@ class AdminPropertyContollerController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/admin/property/{id}', name: 'app_admin_property_delete', methods:["POST"])]
+    #[Route('/admin/admin/property/{id}', name: 'app_admin_property_delete', methods:['POST'])]
     public function delete(Property $property, Request $request): Response
     { 
         if($this->isCsrfTokenValid('delete'.$property->getId(), $request->get('_token'))){
